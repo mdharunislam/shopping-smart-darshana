@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>আমাদের পণ্য - শপিং স্মার্ট দর্শনা</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, "Noto Sans Bengali", sans-serif;
+      background: #f3fff5;
+      color: #173b25;
+    }
+
+    header {
+      background: linear-gradient(135deg, #079447, #12b957);
+      color: white;
+      padding: 18px 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 15px;
+    }
+
+    .title {
+      text-align: center;
+      color: #07863e;
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #16a653;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .categories button {
+      border: none;
+      background: #078f43;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .categories button:hover {
+      background: #056c32;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+      border: 1px solid #d9f0df;
+      transition: 0.3s;
+    }
+
+    .product:hover {
+      transform: translateY(-4px);
+    }
+
+    .product-image {
+      height: 190px;
+      background: #eefaf0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 75px;
+    }
+
+    .product-info {
+      padding: 16px;
+    }
+
+    .product-info h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #087c3b;
+    }
+
+    .product-info p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 45px;
+    }
+
+    .price {
+      color: #e26b00;
+      font-size: 21px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
+    .order-btn {
+      width: 100%;
+      border: none;
+      background: #ffb000;
+      color: #222;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-btn:hover {
+      background: #ff9800;
+    }
+
+    .empty {
+      text-align: center;
+      display: none;
+      padding: 30px;
+      font-size: 18px;
+    }
+
+    footer {
+      margin-top: 40px;
+      background: #078f43;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 500px) {
+      header h1 {
+        font-size: 23px;
+      }
+
+      .title {
+        font-size: 25px;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛍️ শপিং স্মার্ট দর্শনা</h1>
+  <p>ভালো পণ্য, স্মার্ট কেনাকাটা</p>
+</header>
+
+<div class="container">
+
+  <h2 class="title">আমাদের পণ্য</h2>
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="search"
+      placeholder="🔎 পণ্যের নাম লিখে খুঁজুন..."
+      onkeyup="searchProducts()"
+    >
+  </div>
+
+  <div class="categories">
+    <button onclick="filterProducts('all')">সব পণ্য</button>
+    <button onclick="filterProducts('fashion')">ফ্যাশন</button>
+    <button onclick="filterProducts('electronics')">ইলেকট্রনিক্স</button>
+    <button onclick="filterProducts('home')">ঘর ও গৃহস্থালি</button>
+    <button onclick="filterProducts('beauty')">বিউটি</button>
+  </div>
+
+  <div class="products" id="productList">
+
+    <div class="product" data-category="fashion" data-name="টি শার্ট">
+      <div class="product-image">👕</div>
+      <div class="product-info">
+        <h3>স্টাইলিশ টি-শার্ট</h3>
+        <p>দৈনন্দিন ব্যবহারের জন্য আরামদায়ক ও সুন্দর টি-শার্ট।</p>
+        <div class="price">৳ ৪৫০</div>
+        <button class="order-btn" onclick="order('স্টাইলিশ টি-শার্ট')">
+          🛒 অর্ডার করুন
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="fashion" data-name="শার্ট">
+      <div class="product-image">👔</div>
+      <div class="product-info">
+        <h3>ফ্যাশন শার্ট</h3>
+        <p>স্মার্ট লুকের জন্য সুন্দর ও আধুনিক ডিজাইনের শার্ট।</p>
+        <div class="price">৳ ৭৫০</div>
+        <button class="order-btn" onclick="order('ফ্যাশন শার্ট')">
+          🛒 অর্ডার করুন
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="electronics" data-name="ইয়ারফোন">
+      <div class="product-image">🎧</div>
+      <div class="product-info">
+        <h3>ব্লুটুথ ইয়ারফোন</h3>
+        <p>গান শোনা ও কল করার জন্য ব্যবহারযোগ্য ওয়্যারলেস ইয়ারফোন।</p>
+        <div class="price">৳ ৬৫০</div>
+        <button class="order-btn" onclick="order('ব্লুটুথ ইয়ারফোন')">
+          🛒 অর্ডার করুন
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="electronics" data-name="স্মার্ট ঘড়ি">
+      <div class="product-image">⌚</div>
+      <div class="product-info">
+        <h3>স্মার্ট ওয়াচ</h3>
+        <p>দৈনন্দিন ব্যবহারের জন্য আধুনিক ডিজাইনের স্মার্ট ওয়াচ।</p>
+        <div class="price">৳ ১,২০০</div>
+        <button class="order-btn" onclick="order('স্মার্ট ওয়াচ')">
+          🛒 অর্ডার করুন
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="home" data-name="কিচেন সেট">
+      <div class="product-image">🍳</div>
+      <div class="product-info">
+        <h3>কিচেন সেট</h3>
+        <p>রান্নাঘরের দৈনন্দিন কাজের জন্য প্রয়োজনীয় পণ্য।</p>
+        <div class="price">৳ ৯৫০</div>
+        <button class="order-btn" onclick="order('কিচেন সেট')">
+          🛒 অর্ডার করুন
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="beauty" data-name="বিউটি কেয়ার">
+      <div class="product-image">💄</div>
+      <div class="product-info">
+        <h3>বিউটি কেয়ার</h3>
+        <p>ব্যক্তিগত যত্নের জন্য বিভিন্ন ধরনের পণ্য।</p>
+        <div class="price">৳ ৫৫০</div>
+        <button class="order-btn" onclick="order('বিউটি কেয়ার')">
+          🛒 অর্ডার করুন
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty" id="empty">
+    😔 কোনো পণ্য পাওয়া যায়নি।
+  </div>
+
+</div>
+
+<footer>
+  <strong>শপিং স্মার্ট দর্শনা</strong><br>
+  ভালো পণ্য, স্মার্ট কেনাকাটা 🛍️<br>
+  আপনার পছন্দের পণ্য সহজেই খুঁজে নিন।
+</footer>
+
+<script>
+
+  function filterProducts(category) {
+
+    let products = document.querySelectorAll(".product");
+
+    products.forEach(function(product) {
+
+      if (category === "all" ||
+          product.dataset.category === category) {
+
+        product.style.display = "block";
+
+      } else {
+
+        product.style.display = "none";
+
+      }
+
+    });
+
+    document.getElementById("search").value = "";
+    checkEmpty();
+
+  }
+
+
+  function searchProducts() {
+
+    let search =
+      document.getElementById("search").value.toLowerCase();
+
+    let products =
+      document.querySelectorAll(".product");
+
+    products.forEach(function(product) {
+
+      let name =
+        product.dataset.name.toLowerCase();
+
+      let text =
+        product.innerText.toLowerCase();
+
+      if (name.includes(search) ||
+          text.includes(search)) {
+
+        product.style.display = "block";
+
+      } else {
+
+        product.style.display = "none";
+
+      }
+
+    });
+
+    checkEmpty();
+
+  }
+
+
+  function checkEmpty() {
+
+    let products =
+      document.querySelectorAll(".product");
+
+    let visible = 0;
+
+    products.forEach(function(product) {
+
+      if (product.style.display !== "none") {
+        visible++;
+      }
+
+    });
+
+    document.getElementById("empty").style.display =
+      visible === 0 ? "block" : "none";
+
+  }
+
+
+  function order(productName) {
+
+    alert(
+      "আপনি \"" +
+      productName +
+      "\" অর্ডার করতে চাচ্ছেন।\n\n" +
+      "অর্ডার সম্পন্ন করার জন্য আমাদের সাথে যোগাযোগ করুন।"
+    );
+
+  }
+
+</script>
+
+</body>
+</html>
