@@ -455,17 +455,63 @@
      
 function order(productName) {
 
+  let prices = {
+    "স্টাইলিশ টি-শার্ট": 450,
+    "ফ্যাশন শার্ট": 750,
+    "ব্লুটুথ ইয়ারফোন": 650,
+    "স্মার্ট ওয়াচ": 1200,
+    "কিচেন সেট": 950,
+    "বিউটি কেয়ার": 550
+  };
+
+  let productPrice = prices[productName];
+
+  let customerName = prompt("আপনার নাম লিখুন:");
+
+  if (!customerName) {
+    return;
+  }
+
+  let phone = prompt("আপনার মোবাইল নম্বর লিখুন:");
+
+  if (!phone) {
+    return;
+  }
+
+  let quantity = prompt("কতটি পণ্য অর্ডার করতে চান?");
+
+  if (!quantity || isNaN(quantity) || quantity <= 0) {
+    alert("সঠিক পরিমাণ লিখুন।");
+    return;
+  }
+
+  let address = prompt("আপনার সম্পূর্ণ ঠিকানা লিখুন:");
+
+  if (!address) {
+    return;
+  }
+
+  let deliveryCharge = 120;
+  let productTotal = productPrice * quantity;
+  let total = productTotal + deliveryCharge;
+
   let message =
-    "আসসালামু আলাইকুম। আমি \"" +
-    productName +
-    "\" অর্ডার করতে চাই।";
+    "🛒 নতুন অর্ডার\n\n" +
+    "পণ্য: " + productName + "\n" +
+    "একক মূল্য: ৳" + productPrice + "\n" +
+    "পরিমাণ: " + quantity + "\n" +
+    "পণ্যের মূল্য: ৳" + productTotal + "\n" +
+    "🚚 ডেলিভারি চার্জ: ৳" + deliveryCharge + "\n" +
+    "💰 মোট মূল্য: ৳" + total + "\n\n" +
+    "👤 নাম: " + customerName + "\n" +
+    "📱 মোবাইল: " + phone + "\n" +
+    "🏠 ঠিকানা: " + address;
 
   let whatsappURL =
     "https://wa.me/8801981000610?text=" +
     encodeURIComponent(message);
 
   window.open(whatsappURL, "_blank");
-
 }
 
 
