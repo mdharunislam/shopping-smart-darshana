@@ -1,103 +1,486 @@
-<script>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-function filterProducts(category) {
+  <title>আমাদের পণ্য - শপিং স্মার্ট দর্শনা</title>
 
-  let products = document.querySelectorAll(".product");
-
-  products.forEach(function(product) {
-
-    if (
-      category === "all" ||
-      product.dataset.category === category
-    ) {
-      product.style.display = "block";
-    } else {
-      product.style.display = "none";
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-  });
-
-  document.getElementById("search").value = "";
-  checkEmpty();
-}
-
-
-function searchProducts() {
-
-  let search =
-    document.getElementById("search").value.toLowerCase().trim();
-
-  let products =
-    document.querySelectorAll(".product");
-
-  products.forEach(function(product) {
-
-    let name =
-      product.dataset.name.toLowerCase();
-
-    let text =
-      product.innerText.toLowerCase();
-
-    if (
-      name.includes(search) ||
-      text.includes(search)
-    ) {
-      product.style.display = "block";
-    } else {
-      product.style.display = "none";
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5faf6;
+      color: #222;
     }
 
-  });
-
-  checkEmpty();
-}
-
-
-function checkEmpty() {
-
-  let products =
-    document.querySelectorAll(".product");
-
-  let visible = 0;
-
-  products.forEach(function(product) {
-
-    if (product.style.display !== "none") {
-      visible++;
+    header {
+      background: #087f3f;
+      color: white;
+      padding: 18px 15px;
+      text-align: center;
     }
 
-  });
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
 
-  document.getElementById("empty").style.display =
-    visible === 0 ? "block" : "none";
-}
+    header p {
+      margin: 6px 0 0;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 15px;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .title h2 {
+      margin: 0 0 8px;
+      color: #087f3f;
+    }
+
+    .search-box {
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .categories button {
+      border: none;
+      background: #087f3f;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .categories button:hover {
+      background: #056631;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 5px 18px #00000012;
+      border: 1px solid #dff1e4;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 190px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #f7f7f7;
+      margin-bottom: 12px;
+    }
+
+    .product h3 {
+      margin: 8px 0;
+      color: #087f3f;
+      font-size: 19px;
+    }
+
+    .product p {
+      margin: 7px 0;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e65100;
+      margin: 12px 0;
+    }
+
+    .order-btn {
+      border: none;
+      background: #f6c400;
+      color: #222;
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-btn:hover {
+      background: #e5b700;
+    }
+
+    #empty {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      color: #777;
+      font-size: 18px;
+    }
+
+    .back-home {
+      display: block;
+      width: fit-content;
+      margin: 30px auto 0;
+      text-decoration: none;
+      background: #087f3f;
+      color: white;
+      padding: 11px 20px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 23px;
+      }
+
+      .container {
+        padding: 20px 12px;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .product-image {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>শপিং স্মার্ট দর্শনা</h1>
+    <p>আপনার পছন্দের পণ্য এক জায়গায়</p>
+  </header>
+
+  <div class="container">
+
+    <div class="title">
+      <h2>আমাদের পণ্য</h2>
+      <p>পছন্দের ক্যাটাগরি নির্বাচন করুন</p>
+    </div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="search"
+        placeholder="পণ্য খুঁজুন..."
+        oninput="searchProducts()"
+      >
+    </div>
+
+    <div class="categories">
+      <button onclick="filterProducts('all')">সব পণ্য</button>
+      <button onclick="filterProducts('fashion')">ফ্যাশন</button>
+      <button onclick="filterProducts('electronics')">ইলেকট্রনিক্স</button>
+      <button onclick="filterProducts('home')">ঘর ও গৃহস্থালি</button>
+      <button onclick="filterProducts('beauty')">বিউটি</button>
+    </div>
+
+    <div class="products">
+
+      <div class="product"
+           data-category="fashion"
+           data-name="স্টাইলিশ টি-শার্ট">
+
+        <img
+          src="tshirt.png"
+          alt="স্টাইলিশ টি-শার্ট"
+          class="product-image"
+        >
+
+        <h3>স্টাইলিশ টি-শার্ট</h3>
+        <p>আরামদায়ক ও ট্রেন্ডি টি-শার্ট।</p>
+
+        <div class="price">৳ ৪৫০</div>
+
+        <button
+          class="order-btn"
+          onclick="order('স্টাইলিশ টি-শার্ট')"
+        >
+          🛒 অর্ডার করুন
+        </button>
+
+      </div>
 
 
-function order(productName) {
+      <div class="product"
+           data-category="fashion"
+           data-name="ফ্যাশন শার্ট">
 
-  alert(
-    "আপনি \"" +
-    productName +
-    "\" অর্ডার করতে চাচ্ছেন।\n\n" +
-    "অর্ডার সম্পন্ন করার জন্য আমাদের সাথে যোগাযোগ করুন।"
-  );
+        <div class="product-image"
+             style="display:flex;align-items:center;justify-content:center;font-size:70px;">
+          👔
+        </div>
 
-}
+        <h3>ফ্যাশন শার্ট</h3>
+        <p>দৈনন্দিন ব্যবহারের জন্য সুন্দর শার্ট।</p>
+
+        <div class="price">৳ ৭৫০</div>
+
+        <button
+          class="order-btn"
+          onclick="order('ফ্যাশন শার্ট')"
+        >
+          🛒 অর্ডার করুন
+        </button>
+
+      </div>
 
 
-/* হোম পেজ থেকে category ধরে ফিল্টার করবে */
-window.addEventListener("DOMContentLoaded", function() {
+      <div class="product"
+           data-category="electronics"
+           data-name="ব্লুটুথ ইয়ারফোন">
 
-  let params = new URLSearchParams(window.location.search);
+        <div class="product-image"
+             style="display:flex;align-items:center;justify-content:center;font-size:70px;">
+          🎧
+        </div>
 
-  let category = params.get("category");
+        <h3>ব্লুটুথ ইয়ারফোন</h3>
+        <p>স্মার্ট ও ব্যবহার উপযোগী ইয়ারফোন।</p>
 
-  if (category) {
-    filterProducts(category);
-  } else {
-    filterProducts("all");
-  }
+        <div class="price">৳ ৬৫০</div>
 
-});
+        <button
+          class="order-btn"
+          onclick="order('ব্লুটুথ ইয়ারফোন')"
+        >
+          🛒 অর্ডার করুন
+        </button>
 
-</script>
+      </div>
+
+
+      <div class="product"
+           data-category="electronics"
+           data-name="স্মার্ট ওয়াচ">
+
+        <div class="product-image"
+             style="display:flex;align-items:center;justify-content:center;font-size:70px;">
+          ⌚
+        </div>
+
+        <h3>স্মার্ট ওয়াচ</h3>
+        <p>আধুনিক ডিজাইনের স্মার্ট ওয়াচ।</p>
+
+        <div class="price">৳ ১,২০০</div>
+
+        <button
+          class="order-btn"
+          onclick="order('স্মার্ট ওয়াচ')"
+        >
+          🛒 অর্ডার করুন
+        </button>
+
+      </div>
+
+
+      <div class="product"
+           data-category="home"
+           data-name="কিচেন সেট">
+
+        <div class="product-image"
+             style="display:flex;align-items:center;justify-content:center;font-size:70px;">
+          🍳
+        </div>
+
+        <h3>কিচেন সেট</h3>
+        <p>রান্নাঘরের প্রয়োজনীয় পণ্যের সেট।</p>
+
+        <div class="price">৳ ৯৫০</div>
+
+        <button
+          class="order-btn"
+          onclick="order('কিচেন সেট')"
+        >
+          🛒 অর্ডার করুন
+        </button>
+
+      </div>
+
+
+      <div class="product"
+           data-category="beauty"
+           data-name="বিউটি কেয়ার">
+
+        <div class="product-image"
+             style="display:flex;align-items:center;justify-content:center;font-size:70px;">
+          💄
+        </div>
+
+        <h3>বিউটি কেয়ার</h3>
+        <p>ব্যক্তিগত যত্নের প্রয়োজনীয় পণ্য।</p>
+
+        <div class="price">৳ ৫৫০</div>
+
+        <button
+          class="order-btn"
+          onclick="order('বিউটি কেয়ার')"
+        >
+          🛒 অর্ডার করুন
+        </button>
+
+      </div>
+
+    </div>
+
+    <div id="empty">
+      😔 কোনো পণ্য পাওয়া যায়নি।
+    </div>
+
+    <a href="index.html" class="back-home">
+      🏠 হোম পেজে ফিরে যান
+    </a>
+
+  </div>
+
+
+  <script>
+
+    function filterProducts(category) {
+
+      let products = document.querySelectorAll(".product");
+
+      products.forEach(function(product) {
+
+        if (
+          category === "all" ||
+          product.dataset.category === category
+        ) {
+          product.style.display = "block";
+        } else {
+          product.style.display = "none";
+        }
+
+      });
+
+      document.getElementById("search").value = "";
+
+      checkEmpty();
+    }
+
+
+    function searchProducts() {
+
+      let search =
+        document.getElementById("search").value
+        .toLowerCase()
+        .trim();
+
+      let products =
+        document.querySelectorAll(".product");
+
+      products.forEach(function(product) {
+
+        let name =
+          product.dataset.name.toLowerCase();
+
+        let text =
+          product.innerText.toLowerCase();
+
+        if (
+          name.includes(search) ||
+          text.includes(search)
+        ) {
+          product.style.display = "block";
+        } else {
+          product.style.display = "none";
+        }
+
+      });
+
+      checkEmpty();
+    }
+
+
+    function checkEmpty() {
+
+      let products =
+        document.querySelectorAll(".product");
+
+      let visible = 0;
+
+      products.forEach(function(product) {
+
+        if (product.style.display !== "none") {
+          visible++;
+        }
+
+      });
+
+      document.getElementById("empty").style.display =
+        visible === 0 ? "block" : "none";
+    }
+
+
+    function order(productName) {
+
+      alert(
+        "আপনি \"" +
+        productName +
+        "\" অর্ডার করতে চাচ্ছেন।\n\n" +
+        "অর্ডার সম্পন্ন করার জন্য আমাদের সাথে যোগাযোগ করুন।"
+      );
+
+    }
+
+
+    window.addEventListener("DOMContentLoaded", function() {
+
+      let params =
+        new URLSearchParams(window.location.search);
+
+      let category =
+        params.get("category");
+
+      if (category) {
+        filterProducts(category);
+      } else {
+        filterProducts("all");
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
