@@ -452,16 +452,21 @@
     }
 
 
-    function order(productName) {
+     
+function order(productName) {
 
-      alert(
-        "আপনি \"" +
-        productName +
-        "\" অর্ডার করতে চাচ্ছেন।\n\n" +
-        "অর্ডার সম্পন্ন করার জন্য আমাদের সাথে যোগাযোগ করুন।"
-      );
+  let message =
+    "আসসালামু আলাইকুম। আমি \"" +
+    productName +
+    "\" অর্ডার করতে চাই।";
 
-    }
+  let whatsappURL =
+    "https://wa.me/8801981000610?text=" +
+    encodeURIComponent(message);
+
+  window.open(whatsappURL, "_blank");
+
+}
 
 
     window.addEventListener("DOMContentLoaded", function() {
