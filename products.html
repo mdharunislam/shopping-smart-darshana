@@ -456,6 +456,9 @@
 function order(productName) {
 
   let prices = {
+function order(productName) {
+
+  let prices = {
     "স্টাইলিশ টি-শার্ট": 450,
     "ফ্যাশন শার্ট": 750,
     "ব্লুটুথ ইয়ারফোন": 650,
@@ -466,26 +469,26 @@ function order(productName) {
 
   let productPrice = prices[productName];
 
-  let customerName = prompt("👤 আপনার নাম লিখুন:");
+  let customerName = prompt("আপনার নাম লিখুন:");
 
   if (!customerName) {
     return;
   }
 
-  let phone = prompt("📱 আপনার মোবাইল নম্বর লিখুন:");
+  let phone = prompt("আপনার মোবাইল নম্বর লিখুন:");
 
   if (!phone) {
     return;
   }
 
-  let quantity = prompt("📦 কতটি পণ্য অর্ডার করতে চান?");
+  let quantity = prompt("কতটি পণ্য অর্ডার করতে চান?");
 
   if (!quantity || isNaN(quantity) || quantity <= 0) {
-    alert("⚠️ সঠিক পরিমাণ লিখুন।");
+    alert("সঠিক পরিমাণ লিখুন।");
     return;
   }
 
-  let address = prompt("🏠 আপনার সম্পূর্ণ ঠিকানা লিখুন:");
+  let address = prompt("আপনার সম্পূর্ণ ঠিকানা লিখুন:");
 
   if (!address) {
     return;
@@ -496,20 +499,20 @@ function order(productName) {
   let total = productTotal + deliveryCharge;
 
   let message =
-    "🛍️ শপিং স্মার্ট দর্শনা\n" +
+    "শপিং স্মার্ট দর্শনা\n" +
     "━━━━━━━━━━━━━━━━\n" +
-    "🛒 নতুন অর্ডার\n\n" +
-    "📦 পণ্যের নাম: " + productName + "\n" +
-    "💵 একক মূল্য: ৳" + productPrice + "\n" +
-    "🔢 পরিমাণ: " + quantity + "\n" +
-    "💰 পণ্যের মোট মূল্য: ৳" + productTotal + "\n" +
-    "🚚 ডেলিভারি চার্জ: ৳" + deliveryCharge + "\n" +
+    "নতুন অর্ডার\n\n" +
+    "পণ্যের নাম: " + productName + "\n" +
+    "একক মূল্য: ৳" + productPrice + "\n" +
+    "পরিমাণ: " + quantity + "\n" +
+    "পণ্যের মোট মূল্য: ৳" + productTotal + "\n" +
+    "ডেলিভারি চার্জ: ৳" + deliveryCharge + "\n" +
     "━━━━━━━━━━━━━━━━\n" +
-    "💳 সর্বমোট: ৳" + total + "\n\n" +
-    "👤 কাস্টমারের নাম: " + customerName + "\n" +
-    "📱 মোবাইল নম্বর: " + phone + "\n" +
-    "🏠 ডেলিভারি ঠিকানা: " + address + "\n\n" +
-    "✅ অর্ডারটি গ্রহণ করার জন্য ধন্যবাদ।";
+    "সর্বমোট: ৳" + total + "\n\n" +
+    "কাস্টমারের নাম: " + customerName + "\n" +
+    "মোবাইল নম্বর: " + phone + "\n" +
+    "ডেলিভারি ঠিকানা: " + address + "\n\n" +
+    "অর্ডার গ্রহণের জন্য ধন্যবাদ।";
 
   let whatsappURL =
     "https://wa.me/8801981000610?text=" +
@@ -517,6 +520,7 @@ function order(productName) {
 
   window.open(whatsappURL, "_blank");
 }
+
 
   
 
