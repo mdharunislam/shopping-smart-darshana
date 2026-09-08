@@ -407,27 +407,33 @@
     }
 
     function getFilteredProducts() {
-      const search = document
-        .getElementById("search")
-        .value
-        .toLowerCase()
-        .trim();
+  const search = document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
 
-      return PRODUCTS.filter(function(product) {
-        const categoryMatch =
-          selectedCategory === "all" ||
-          product.category === selectedCategory;
+  const productId = new URLSearchParams(window.location.search)
+    .get("product");
 
-        const text =
-          (product.name + " " + (product.description || ""))
-          .toLowerCase();
+  return PRODUCTS.filter(function(product) {
+    const productMatch =
+      !productId || product.id === productId;
 
-        const searchMatch =
-          !search || text.includes(search);
+    const categoryMatch =
+      selectedCategory === "all" ||
+      product.category === selectedCategory;
 
-        return categoryMatch && searchMatch;
-      });
-    }
+    const text =
+      (product.name + " " + (product.description || ""))
+      .toLowerCase();
+
+    const searchMatch =
+      !search || text.includes(search);
+
+    return productMatch && categoryMatch && searchMatch;
+  });
+}
 
     function renderProducts() {
       const list = getFilteredProducts();
