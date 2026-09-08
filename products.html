@@ -1,22 +1,12 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>আমাদের পণ্য - শপিং স্মার্ট দর্শনা</title>
 
   <style>
-
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -32,15 +22,8 @@
       text-align: center;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 6px 0 0;
-      font-size: 14px;
-    }
+    header h1 { margin: 0; font-size: 28px; }
+    header p { margin: 6px 0 0; font-size: 14px; }
 
     .container {
       max-width: 1100px;
@@ -64,8 +47,8 @@
     }
 
     .search-box {
-      max-width: 600px;
-      margin: 0 auto 20px;
+      max-width: 650px;
+      margin: 0 auto 18px;
     }
 
     .search-box input {
@@ -77,36 +60,47 @@
       outline: none;
     }
 
-    .search-box input:focus {
-      border-color: #087f3f;
-    }
+    .search-box input:focus { border-color: #087f3f; }
 
     .categories {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
-      margin-bottom: 25px;
+      gap: 9px;
+      margin-bottom: 20px;
     }
 
-    .categories button {
+    .categories button,
+    .page-btn {
       border: none;
       background: #087f3f;
       color: white;
-      padding: 10px 16px;
+      padding: 10px 15px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 15px;
     }
 
-    .categories button:hover {
+    .categories button.active,
+    .categories button:hover,
+    .page-btn:hover {
       background: #056631;
+    }
+
+    .result-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 10px 0 18px;
+      color: #555;
+      font-size: 14px;
     }
 
     .products {
       display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
     }
 
@@ -133,11 +127,9 @@
       height: 190px;
       border-radius: 12px;
       background: #f7f7f7;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       font-size: 70px;
       margin-bottom: 12px;
     }
@@ -152,6 +144,7 @@
       margin: 7px 0;
       color: #555;
       line-height: 1.5;
+      min-height: 44px;
     }
 
     .price {
@@ -172,9 +165,7 @@
       cursor: pointer;
     }
 
-    .order-btn:hover {
-      background: #e5b700;
-    }
+    .order-btn:hover { background: #e5b700; }
 
     #empty {
       display: none;
@@ -182,6 +173,26 @@
       padding: 30px;
       color: #777;
       font-size: 18px;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 28px 0 10px;
+    }
+
+    .page-number {
+      min-width: 42px;
+      border-radius: 10px;
+    }
+
+    .page-info {
+      font-weight: bold;
+      color: #087f3f;
+      padding: 8px 10px;
     }
 
     .back-home {
@@ -195,753 +206,457 @@
       border-radius: 10px;
     }
 
-    .back-home:hover {
-      background: #056631;
-    }
+    .back-home:hover { background: #056631; }
 
     @media (max-width: 600px) {
+      header h1 { font-size: 23px; }
 
-      header h1 {
-        font-size: 23px;
-      }
+      .container { padding: 20px 12px; }
 
-      .container {
-        padding: 20px 12px;
-      }
-
-      .products {
-        grid-template-columns: 1fr;
-      }
+      .products { grid-template-columns: 1fr; }
 
       .product-image,
-      .emoji-image {
-        height: 220px;
-      }
-
+      .emoji-image { height: 220px; }
     }
-
   </style>
-
 </head>
-
 
 <body>
 
-
-  <!-- HEADER -->
-
   <header>
-
-    <h1>
-      শপিং স্মার্ট দর্শনা
-    </h1>
-
-    <p>
-      আপনার পছন্দের পণ্য এক জায়গায়
-    </p>
-
+    <h1>শপিং স্মার্ট দর্শনা</h1>
+    <p>আপনার পছন্দের পণ্য এক জায়গায়</p>
   </header>
-
-
 
   <div class="container">
 
-
-    <!-- TITLE -->
-
     <div class="title">
-
-      <h2>
-        আমাদের পণ্য
-      </h2>
-
-      <p>
-        পছন্দের ক্যাটাগরি নির্বাচন করুন
-      </p>
-
+      <h2>আমাদের পণ্য</h2>
+      <p>পছন্দের পণ্য খুঁজে অর্ডার করুন</p>
     </div>
 
-
-
-    <!-- SEARCH -->
-
     <div class="search-box">
-
       <input
         type="text"
         id="search"
-        placeholder="পণ্য খুঁজুন..."
+        placeholder="পণ্যের নাম লিখে খুঁজুন..."
         oninput="searchProducts()"
       >
-
     </div>
 
-
-
-    <!-- CATEGORY BUTTONS -->
-
-    <div class="categories">
-
-      <button
-        onclick="filterProducts('all')"
-      >
-        সব পণ্য
-      </button>
-
-      <button
-        onclick="filterProducts('fashion')"
-      >
-        ফ্যাশন
-      </button>
-
-      <button
-        onclick="filterProducts('electronics')"
-      >
-        ইলেকট্রনিক্স
-      </button>
-
-      <button
-        onclick="filterProducts('home')"
-      >
-        ঘর ও গৃহস্থালি
-      </button>
-
-      <button
-        onclick="filterProducts('beauty')"
-      >
-        বিউটি
-      </button>
-
+    <div class="categories" id="categoryButtons">
+      <button class="active" onclick="setCategory('all', this)">সব পণ্য</button>
+      <button onclick="setCategory('fashion', this)">ফ্যাশন</button>
+      <button onclick="setCategory('electronics', this)">ইলেকট্রনিক্স</button>
+      <button onclick="setCategory('home', this)">ঘর ও গৃহস্থালি</button>
+      <button onclick="setCategory('beauty', this)">বিউটি</button>
     </div>
 
-
-
-    <!-- PRODUCTS -->
-
-    <div class="products">
-
-
-
-      <!-- PRODUCT 1 -->
-
-      <div
-        class="product"
-        data-category="fashion"
-        data-name="স্টাইলিশ টি-শার্ট"
-        data-price="450"
-      >
-
-        <img
-          src="tshirt.png"
-          alt="স্টাইলিশ টি-শার্ট"
-          class="product-image"
-        >
-
-        <h3>
-          স্টাইলিশ টি-শার্ট
-        </h3>
-
-        <p>
-          আরামদায়ক ও ট্রেন্ডি টি-শার্ট।
-        </p>
-
-        <div class="price">
-          ৳ ৪৫০
-        </div>
-
-        <button
-          class="order-btn"
-          onclick="order(this)"
-        >
-          🛒 অর্ডার করুন
-        </button>
-
-      </div>
-
-
-
-      <!-- PRODUCT 2 -->
-
-      <div
-        class="product"
-        data-category="fashion"
-        data-name="ফ্যাশন শার্ট"
-        data-price="750"
-      >
-
-        <div class="emoji-image">
-          👔
-        </div>
-
-        <h3>
-          ফ্যাশন শার্ট
-        </h3>
-
-        <p>
-          দৈনন্দিন ব্যবহারের জন্য সুন্দর শার্ট।
-        </p>
-
-        <div class="price">
-          ৳ ৭৫০
-        </div>
-
-        <button
-          class="order-btn"
-          onclick="order(this)"
-        >
-          🛒 অর্ডার করুন
-        </button>
-
-      </div>
-
-
-
-      <!-- PRODUCT 3 -->
-
-      <div
-        class="product"
-        data-category="electronics"
-        data-name="ব্লুটুথ ইয়ারফোন"
-        data-price="650"
-      >
-
-        <div class="emoji-image">
-          🎧
-        </div>
-
-        <h3>
-          ব্লুটুথ ইয়ারফোন
-        </h3>
-
-        <p>
-          স্মার্ট ও ব্যবহার উপযোগী ইয়ারফোন।
-        </p>
-
-        <div class="price">
-          ৳ ৬৫০
-        </div>
-
-        <button
-          class="order-btn"
-          onclick="order(this)"
-        >
-          🛒 অর্ডার করুন
-        </button>
-
-      </div>
-
-
-
-      <!-- PRODUCT 4 -->
-
-      <div
-        class="product"
-        data-category="electronics"
-        data-name="স্মার্ট ওয়াচ"
-        data-price="1200"
-      >
-
-        <div class="emoji-image">
-          ⌚
-        </div>
-
-        <h3>
-          স্মার্ট ওয়াচ
-        </h3>
-
-        <p>
-          আধুনিক ডিজাইনের স্মার্ট ওয়াচ।
-        </p>
-
-        <div class="price">
-          ৳ ১,২০০
-        </div>
-
-        <button
-          class="order-btn"
-          onclick="order(this)"
-        >
-          🛒 অর্ডার করুন
-        </button>
-
-      </div>
-
-
-
-      <!-- PRODUCT 5 -->
-
-      <div
-        class="product"
-        data-category="home"
-        data-name="কিচেন সেট"
-        data-price="950"
-      >
-
-        <div class="emoji-image">
-          🍳
-        </div>
-
-        <h3>
-          কিচেন সেট
-        </h3>
-
-        <p>
-          রান্নাঘরের প্রয়োজনীয় পণ্যের সেট।
-        </p>
-
-        <div class="price">
-          ৳ ৯৫০
-        </div>
-
-        <button
-          class="order-btn"
-          onclick="order(this)"
-        >
-          🛒 অর্ডার করুন
-        </button>
-
-      </div>
-
-
-
-      <!-- PRODUCT 6 -->
-
-      <div
-        class="product"
-        data-category="beauty"
-        data-name="বিউটি কেয়ার"
-        data-price="550"
-      >
-
-        <div class="emoji-image">
-          💄
-        </div>
-
-        <h3>
-          বিউটি কেয়ার
-        </h3>
-
-        <p>
-          ব্যক্তিগত যত্নের প্রয়োজনীয় পণ্য।
-        </p>
-
-        <div class="price">
-          ৳ ৫৫০
-        </div>
-
-        <button
-          class="order-btn"
-          onclick="order(this)"
-        >
-          🛒 অর্ডার করুন
-        </button>
-
-      </div>
-
-
-
+    <div class="result-bar">
+      <span id="resultCount">পণ্য: 0</span>
+      <span>যত খুশি পণ্য যোগ করুন — ১০,০০০+ পণ্যও যোগ করা যাবে</span>
     </div>
 
-
-
-    <!-- EMPTY MESSAGE -->
+    <div class="products" id="products"></div>
 
     <div id="empty">
-
       কোনো পণ্য পাওয়া যায়নি।
-
     </div>
 
+    <div class="pagination" id="pagination"></div>
 
-
-    <!-- HOME BUTTON -->
-
-    <a
-      href="index.html"
-      class="back-home"
-    >
-      🏠 হোম পেজে ফিরে যান
-    </a>
-
-
+    <a href="index.html" class="back-home">🏠 হোম পেজে ফিরে যান</a>
   </div>
 
-
-
   <script>
+    /*
+    =========================================================
+    নতুন পণ্য যোগ করার একমাত্র জায়গা: নিচের PRODUCTS তালিকা।
 
+    এখানে ১০,০০০-এর বেশি পণ্যও যোগ করা যাবে।
+    প্রতিটি নতুন পণ্যের জন্য শুধু একটি নতুন {...} যোগ করুন।
+    JavaScript-এর অন্য কোনো অংশ পরিবর্তন করবেন না।
 
-    /* =====================================
-       CATEGORY FILTER
-    ===================================== */
+    গুরুত্বপূর্ণ:
+    ১০,০০০+ পণ্য হলে একসাথে সবগুলো স্ক্রিনে দেখানো হবে না।
+    প্রতি পেজে ২৪টি করে দেখাবে এবং পরের/আগের বাটন থাকবে।
+    এতে বড় পণ্য তালিকাও ব্যবহার করা সহজ থাকবে।
 
-    function filterProducts(category) {
+    category অবশ্যই:
+    fashion / electronics / home / beauty
 
-      let products =
-        document.querySelectorAll(".product");
+    image:
+    ছবি না থাকলে image: "" রেখে emoji ব্যবহার করতে পারেন।
+    =========================================================
+    */
 
+    const PRODUCTS = [
+      {
+        name: "স্টাইলিশ টি-শার্ট",
+        category: "fashion",
+        price: 450,
+        image: "tshirt.png",
+        emoji: "👕",
+        description: "আরামদায়ক ও ট্রেন্ডি টি-শার্ট।"
+      },
 
-      products.forEach(function(product) {
+      {
+        name: "ফ্যাশন শার্ট",
+        category: "fashion",
+        price: 750,
+        image: "",
+        emoji: "👔",
+        description: "দৈনন্দিন ব্যবহারের জন্য সুন্দর শার্ট।"
+      },
 
-        if (
-          category === "all" ||
-          product.dataset.category === category
-        ) {
+      {
+        name: "ব্লুটুথ ইয়ারফোন",
+        category: "electronics",
+        price: 650,
+        image: "",
+        emoji: "🎧",
+        description: "স্মার্ট ও ব্যবহার উপযোগী ইয়ারফোন।"
+      },
 
-          product.style.display = "block";
+      {
+        name: "স্মার্ট ওয়াচ",
+        category: "electronics",
+        price: 1200,
+        image: "",
+        emoji: "⌚",
+        description: "আধুনিক ডিজাইনের স্মার্ট ওয়াচ।"
+      },
 
-        } else {
+      {
+        name: "কিচেন সেট",
+        category: "home",
+        price: 950,
+        image: "",
+        emoji: "🍳",
+        description: "রান্নাঘরের প্রয়োজনীয় পণ্যের সেট।"
+      },
 
-          product.style.display = "none";
+      {
+        name: "বিউটি কেয়ার",
+        category: "beauty",
+        price: 550,
+        image: "",
+        emoji: "💄",
+        description: "ব্যক্তিগত যত্নের প্রয়োজনীয় পণ্য।"
+      }
 
-        }
+      /*
+      =========================================================
+      উদাহরণ: নতুন থ্রি পিস যোগ করতে নিচের মতো লিখবেন।
 
-      });
+      ,
+      {
+        name: "থ্রি পিস",
+        category: "fashion",
+        price: 1200,
+        image: "threepiece.png",
+        emoji: "👗",
+        description: "সুন্দর ডিজাইনের থ্রি পিস।"
+      }
 
+      শুধু এই তথ্যগুলো বদলাবেন:
+      name     = পণ্যের নাম
+      category = fashion/electronics/home/beauty
+      price    = দাম
+      image    = GitHub-এ আপলোড করা ছবির নাম
+      description = পণ্যের বিবরণ
 
-      document.getElementById("search").value = "";
+      নতুন পণ্য যোগ করার সময় আগের পণ্যের শেষ } এর পরে
+      একটি কমা (,) দিতে হবে।
+      =========================================================
+      */
+    ];
 
+    const DELIVERY_CHARGE = 120;
+    const WHATSAPP_NUMBER = "8801981000610";
+    const PRODUCTS_PER_PAGE = 24;
 
-      checkEmpty();
+    let selectedCategory = "all";
+    let currentPage = 1;
 
+    function formatPrice(number) {
+      return Number(number).toLocaleString("bn-BD");
     }
 
+    function createProductCard(product) {
+      const card = document.createElement("div");
+      card.className = "product";
 
+      let visual = "";
 
-    /* =====================================
-       PRODUCT SEARCH
-    ===================================== */
+      if (product.image) {
+        visual = `
+          <img
+            src="${escapeHtml(product.image)}"
+            alt="${escapeHtml(product.name)}"
+            class="product-image"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <div class="emoji-image" style="display:none;">
+            ${product.emoji || "🛍️"}
+          </div>
+        `;
+      } else {
+        visual = `
+          <div class="emoji-image">
+            ${product.emoji || "🛍️"}
+          </div>
+        `;
+      }
+
+      card.innerHTML = `
+        ${visual}
+
+        <h3>${escapeHtml(product.name)}</h3>
+
+        <p>${escapeHtml(product.description || "")}</p>
+
+        <div class="price">
+          ৳ ${formatPrice(product.price)}
+        </div>
+
+        <button class="order-btn" type="button">
+          🛒 অর্ডার করুন
+        </button>
+      `;
+
+      card.querySelector(".order-btn").addEventListener("click", function() {
+        order(product);
+      });
+
+      return card;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getFilteredProducts() {
+      const search = document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+      return PRODUCTS.filter(function(product) {
+        const categoryMatch =
+          selectedCategory === "all" ||
+          product.category === selectedCategory;
+
+        const text =
+          (product.name + " " + (product.description || ""))
+          .toLowerCase();
+
+        const searchMatch =
+          !search || text.includes(search);
+
+        return categoryMatch && searchMatch;
+      });
+    }
+
+    function renderProducts() {
+      const list = getFilteredProducts();
+      const container = document.getElementById("products");
+      const empty = document.getElementById("empty");
+      const pagination = document.getElementById("pagination");
+
+      container.innerHTML = "";
+      pagination.innerHTML = "";
+
+      document.getElementById("resultCount").textContent =
+        "পণ্য: " + formatPrice(list.length);
+
+      if (list.length === 0) {
+        empty.style.display = "block";
+        return;
+      }
+
+      empty.style.display = "none";
+
+      const totalPages =
+        Math.ceil(list.length / PRODUCTS_PER_PAGE);
+
+      if (currentPage > totalPages) {
+        currentPage = totalPages;
+      }
+
+      const start =
+        (currentPage - 1) * PRODUCTS_PER_PAGE;
+
+      const pageProducts =
+        list.slice(start, start + PRODUCTS_PER_PAGE);
+
+      pageProducts.forEach(function(product) {
+        container.appendChild(createProductCard(product));
+      });
+
+      renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+      const pagination =
+        document.getElementById("pagination");
+
+      if (totalPages <= 1) return;
+
+      const previous = document.createElement("button");
+      previous.className = "page-btn";
+      previous.textContent = "‹ আগের";
+      previous.disabled = currentPage === 1;
+      previous.onclick = function() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProducts();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+      pagination.appendChild(previous);
+
+      const info = document.createElement("span");
+      info.className = "page-info";
+      info.textContent =
+        currentPage + " / " + totalPages;
+      pagination.appendChild(info);
+
+      const next = document.createElement("button");
+      next.className = "page-btn";
+      next.textContent = "পরের ›";
+      next.disabled = currentPage === totalPages;
+      next.onclick = function() {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderProducts();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+      pagination.appendChild(next);
+    }
+
+    function setCategory(category, button) {
+      selectedCategory = category;
+      currentPage = 1;
+
+      document
+        .querySelectorAll("#categoryButtons button")
+        .forEach(function(btn) {
+          btn.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      renderProducts();
+    }
 
     function searchProducts() {
-
-      let search =
-        document
-          .getElementById("search")
-          .value
-          .toLowerCase()
-          .trim();
-
-
-      let products =
-        document.querySelectorAll(".product");
-
-
-      products.forEach(function(product) {
-
-        let name =
-          product.dataset.name.toLowerCase();
-
-
-        let text =
-          product.innerText.toLowerCase();
-
-
-        if (
-          name.includes(search) ||
-          text.includes(search)
-        ) {
-
-          product.style.display = "block";
-
-        } else {
-
-          product.style.display = "none";
-
-        }
-
-      });
-
-
-      checkEmpty();
-
+      currentPage = 1;
+      renderProducts();
     }
 
+    function order(product) {
+      const productName = product.name;
+      const productPrice = Number(product.price);
 
-
-    /* =====================================
-       CHECK EMPTY
-    ===================================== */
-
-    function checkEmpty() {
-
-      let products =
-        document.querySelectorAll(".product");
-
-
-      let visible = 0;
-
-
-      products.forEach(function(product) {
-
-        if (
-          product.style.display !== "none"
-        ) {
-
-          visible++;
-
-        }
-
-      });
-
-
-      document.getElementById("empty").style.display =
-        visible === 0
-          ? "block"
-          : "none";
-
-    }
-
-
-
-    /* =====================================
-       WHATSAPP ORDER
-       PRICE COMES FROM PRODUCT CARD
-       ===================================== */
-
-    function order(button) {
-
-
-      /* Get the product card */
-
-      let product =
-        button.closest(".product");
-
-
-      if (!product) {
-
-        alert("পণ্যের তথ্য পাওয়া যায়নি।");
-
-        return;
-
-      }
-
-
-      /* Get product information */
-
-      let productName =
-        product.dataset.name;
-
-
-      let productPrice =
-        Number(product.dataset.price);
-
-
-      if (
-        !productName ||
-        !productPrice ||
-        productPrice <= 0
-      ) {
-
+      if (!productName || !productPrice || productPrice <= 0) {
         alert("পণ্যের তথ্য সঠিক নয়।");
-
         return;
-
       }
 
+      const customerName = prompt("আপনার নাম লিখুন:");
+      if (!customerName) return;
 
+      const phone = prompt("আপনার মোবাইল নম্বর লিখুন:");
+      if (!phone) return;
 
-      /* Customer name */
+      let quantity = prompt("কতটি পণ্য অর্ডার করতে চান?");
+      quantity = Number(quantity);
 
-      let customerName =
-        prompt(
-          "আপনার নাম লিখুন:"
-        );
-
-
-      if (!customerName) {
-
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        alert("সঠিক পূর্ণসংখ্যা পরিমাণ লিখুন।");
         return;
-
       }
 
+      const address = prompt("আপনার সম্পূর্ণ ঠিকানা লিখুন:");
+      if (!address) return;
 
+      const productTotal = productPrice * quantity;
+      const total = productTotal + DELIVERY_CHARGE;
 
-      /* Customer phone */
-
-      let phone =
-        prompt(
-          "আপনার মোবাইল নম্বর লিখুন:"
-        );
-
-
-      if (!phone) {
-
-        return;
-
-      }
-
-
-
-      /* Quantity */
-
-      let quantity =
-        prompt(
-          "কতটি পণ্য অর্ডার করতে চান?"
-        );
-
-
-      quantity =
-        Number(quantity);
-
-
-      if (
-        !quantity ||
-        isNaN(quantity) ||
-        quantity <= 0
-      ) {
-
-        alert(
-          "সঠিক পরিমাণ লিখুন।"
-        );
-
-        return;
-
-      }
-
-
-
-      /* Address */
-
-      let address =
-        prompt(
-          "আপনার সম্পূর্ণ ঠিকানা লিখুন:"
-        );
-
-
-      if (!address) {
-
-        return;
-
-      }
-
-
-
-      /* Delivery charge */
-
-      let deliveryCharge = 120;
-
-
-
-      /* Calculate total */
-
-      let productTotal =
-        productPrice * quantity;
-
-
-      let total =
-        productTotal + deliveryCharge;
-
-
-
-      /* WhatsApp message */
-
-      let message =
-
+      const message =
         "শপিং স্মার্ট দর্শনা\n" +
-
         "━━━━━━━━━━━━━━━━\n" +
-
         "নতুন অর্ডার\n\n" +
-
-        "পণ্যের নাম: " +
-        productName +
-        "\n" +
-
-        "একক মূল্য: ৳" +
-        productPrice +
-        "\n" +
-
-        "পরিমাণ: " +
-        quantity +
-        "\n" +
-
-        "পণ্যের মোট মূল্য: ৳" +
-        productTotal +
-        "\n" +
-
-        "ডেলিভারি চার্জ: ৳" +
-        deliveryCharge +
-        "\n" +
-
+        "পণ্যের নাম: " + productName + "\n" +
+        "একক মূল্য: ৳" + productPrice + "\n" +
+        "পরিমাণ: " + quantity + "\n" +
+        "পণ্যের মোট মূল্য: ৳" + productTotal + "\n" +
+        "ডেলিভারি চার্জ: ৳" + DELIVERY_CHARGE + "\n" +
         "━━━━━━━━━━━━━━━━\n" +
-
-        "সর্বমোট: ৳" +
-        total +
-        "\n\n" +
-
-        "কাস্টমারের নাম: " +
-        customerName +
-        "\n" +
-
-        "মোবাইল নম্বর: " +
-        phone +
-        "\n" +
-
-        "ডেলিভারি ঠিকানা: " +
-        address +
-        "\n\n" +
-
+        "সর্বমোট: ৳" + total + "\n\n" +
+        "কাস্টমারের নাম: " + customerName + "\n" +
+        "মোবাইল নম্বর: " + phone + "\n" +
+        "ডেলিভারি ঠিকানা: " + address + "\n\n" +
         "অর্ডার গ্রহণের জন্য ধন্যবাদ।";
 
-
-
-      /* WhatsApp number */
-
-      let whatsappURL =
-
-        "https://wa.me/8801981000610?text=" +
-
+      const whatsappURL =
+        "https://wa.me/" +
+        WHATSAPP_NUMBER +
+        "?text=" +
         encodeURIComponent(message);
 
-
-
-      /* Open WhatsApp */
-
-      window.open(
-        whatsappURL,
-        "_blank"
-      );
-
+      window.open(whatsappURL, "_blank");
     }
 
+    function loadCategoryFromURL() {
+      const params =
+        new URLSearchParams(window.location.search);
 
+      const category = params.get("category");
 
-    /* =====================================
-       LOAD CATEGORY FROM URL
-    ===================================== */
+      if (
+        ["fashion", "electronics", "home", "beauty"]
+        .includes(category)
+      ) {
+        selectedCategory = category;
 
-    window.addEventListener(
-      "DOMContentLoaded",
-      function() {
+        document
+          .querySelectorAll("#categoryButtons button")
+          .forEach(function(btn) {
+            btn.classList.remove("active");
+          });
 
+        const buttons =
+          document.querySelectorAll("#categoryButtons button");
 
-        let params =
-          new URLSearchParams(
-            window.location.search
-          );
+        const index = {
+          fashion: 1,
+          electronics: 2,
+          home: 3,
+          beauty: 4
+        }[category];
 
-
-        let category =
-          params.get("category");
-
-
-        if (category) {
-
-          filterProducts(category);
-
-        } else {
-
-          filterProducts("all");
-
+        if (buttons[index]) {
+          buttons[index].classList.add("active");
         }
-
       }
+
+      renderProducts();
+    }
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadCategoryFromURL
     );
-
-
   </script>
 
-
 </body>
-
 </html>
