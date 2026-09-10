@@ -626,12 +626,25 @@
           style="width:100%;padding:14px;margin:6px 0;
           border:1px solid #ccc;border-radius:10px;font-size:16px;">
 
-        <textarea id="orderAddress"
-          rows="4"
-          placeholder="আপনার সম্পূর্ণ ঠিকানা লিখুন"
-          style="width:100%;padding:14px;margin:6px 0;
-          border:1px solid #ccc;border-radius:10px;
-          font-size:16px;resize:vertical;"></textarea>
+        <input id="orderDistrict"
+  placeholder="জেলা লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+<input id="orderThana"
+  placeholder="থানা/উপজেলা লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+<input id="orderUnion"
+  placeholder="স্থান/ইউনিয়ন লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+<input id="orderVillage"
+  placeholder="গ্রাম লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
 
         <button id="confirmOrder" style="
           width:100%;
@@ -667,13 +680,27 @@
     const quantity =
       Number(document.getElementById("orderQuantity").value);
 
-    const address =
-      document.getElementById("orderAddress").value.trim();
+    const district =
+  document.getElementById("orderDistrict").value.trim();
 
-    if (!customerName || !phone || !address) {
-      alert("নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা দিন।");
-      return;
-    }
+const thana =
+  document.getElementById("orderThana").value.trim();
+
+const union =
+  document.getElementById("orderUnion").value.trim();
+
+const village =
+  document.getElementById("orderVillage").value.trim();
+
+const address =
+  "জেলা: " + district +
+  ", থানা/উপজেলা: " + thana +
+  ", স্থান/ইউনিয়ন: " + union +
+  ", গ্রাম: " + village;
+    if (!customerName || !phone || !district || !thana || !union || !village) {
+  alert("নাম, মোবাইল নম্বর, জেলা, থানা/উপজেলা, স্থান/ইউনিয়ন ও গ্রাম পূরণ করুন");
+  return;
+}
 
     if (!Number.isInteger(quantity) || quantity <= 0) {
       alert("সঠিক পরিমাণ লিখুন।");
@@ -696,7 +723,10 @@
       "সর্বমোট: ৳" + total + "\n\n" +
       "কাস্টমারের নাম: " + customerName + "\n" +
       "মোবাইল নম্বর: " + phone + "\n" +
-      "সম্পূর্ণ ঠিকানা: " + address + "\n\n" +
+      "জেলা: " + district + "\n" +
+"থানা/উপজেলা: " + thana + "\n" +
+"স্থান/ইউনিয়ন: " + union + "\n" +
+"গ্রাম: " + village + "\n\n" +
       "প্রোডাক্টের ছবি: " + imageUrl + "\n\n" +
 "সবুজ Send (➤) বাটনে চাপ দিয়ে মেসেজটা পাঠিয়ে দিন। ❤️";
 
