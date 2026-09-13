@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আমাদের পণ্য - শপিং স্মার্ট দর্শনা</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5faf6;
+      color: #222;
+    }
+
+    header {
+      background: #087f3f;
+      color: white;
+      padding: 18px 15px;
+      text-align: center;
+    }
+
+    header h1 { margin: 0; font-size: 28px; }
+    header p { margin: 6px 0 0; font-size: 14px; }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 15px;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .title h2 {
+      margin: 0 0 8px;
+      color: #087f3f;
+    }
+
+    .title p {
+      margin: 0;
+      color: #555;
+    }
+
+    .search-box {
+      max-width: 650px;
+      margin: 0 auto 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .search-box input:focus { border-color: #087f3f; }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 20px;
+    }
+
+    .categories button,
+    .page-btn {
+      border: none;
+      background: #087f3f;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .categories button.active,
+    .categories button:hover,
+    .page-btn:hover {
+      background: #056631;
+    }
+
+    .result-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 10px 0 18px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 5px 18px #00000012;
+      border: 1px solid #dff1e4;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 190px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #f7f7f7;
+      margin-bottom: 12px;
+    }
+
+    .emoji-image {
+      width: 100%;
+      height: 190px;
+      border-radius: 12px;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 70px;
+      margin-bottom: 12px;
+    }
+
+    .product h3 {
+      margin: 8px 0;
+      color: #087f3f;
+      font-size: 19px;
+    }
+
+    .product p {
+      margin: 7px 0;
+      color: #555;
+      line-height: 1.5;
+      min-height: 44px;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e65100;
+      margin: 12px 0;
+    }
+
+    .order-btn {
+      border: none;
+      background: #f6c400;
+      color: #222;
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-btn:hover { background: #e5b700; }
+
+    #empty {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      color: #777;
+      font-size: 18px;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 28px 0 10px;
+    }
+
+    .page-number {
+      min-width: 42px;
+      border-radius: 10px;
+    }
+
+    .page-info {
+      font-weight: bold;
+      color: #087f3f;
+      padding: 8px 10px;
+    }
+
+    .back-home {
+      display: block;
+      width: fit-content;
+      margin: 30px auto 0;
+      text-decoration: none;
+      background: #087f3f;
+      color: white;
+      padding: 11px 20px;
+      border-radius: 10px;
+    }
+
+    .back-home:hover { background: #056631; }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 23px; }
+
+      .container { padding: 20px 12px; }
+
+      .products { grid-template-columns: 1fr; }
+
+      .product-image,
+      .emoji-image { height: 220px; }
+    }
+
+    /* =========================
+       Firebase Review System
+       ========================= */
+    .review-btn {
+      width: 100%;
+      margin-top: 10px;
+      border: 1px solid #087f3f;
+      background: white;
+      color: #087f3f;
+      padding: 11px 15px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .review-btn:hover { background: #eef9f1; }
+
+    .review-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,.65);
+      overflow-y: auto;
+      padding: 18px;
+    }
+
+    .review-box {
+      width: min(560px, 100%);
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,.25);
+    }
+
+    .review-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .review-head h2 {
+      margin: 0;
+      color: #087f3f;
+      font-size: 22px;
+    }
+
+    .review-close {
+      border: none;
+      background: #eee;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .review-summary {
+      background: #f5faf6;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 12px 0;
+      text-align: center;
+    }
+
+    .review-stars {
+      color: #f6b800;
+      font-size: 25px;
+      letter-spacing: 2px;
+    }
+
+    .review-form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .review-form input,
+    .review-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .review-form input:focus,
+    .review-form textarea:focus {
+      border-color: #087f3f;
+    }
+
+    .review-form textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .star-picker {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 4px;
+      margin: 5px 0 8px;
+    }
+
+    .star-picker input {
+      display: none;
+    }
+
+    .star-picker label {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .star-picker label:hover,
+    .star-picker label:hover ~ label,
+    .star-picker input:checked ~ label {
+      color: #f6b800;
+    }
+
+    .review-submit {
+      width: 100%;
+      border: none;
+      background: #087f3f;
+      color: white;
+      padding: 13px;
+      border-radius: 11px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .review-submit:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .review-list {
+      margin-top: 18px;
+      border-top: 1px solid #e4e4e4;
+      padding-top: 12px;
+    }
+
+    .review-item {
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 9px 0;
+    }
+
+    .review-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .review-name {
+      font-weight: bold;
+      color: #087f3f;
+    }
+
+    .review-date {
+      font-size: 12px;
+      color: #777;
+      white-space: nowrap;
+    }
+
+    .review-text {
+      margin: 7px 0 0;
+      color: #444;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .review-empty,
+    .review-loading {
+      text-align: center;
+      color: #777;
+      padding: 12px;
+    }
+
+    .review-error {
+      background: #fff4f4;
+      color: #a00000;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>শপিং স্মার্ট দর্শনা</h1>
+    <p>আপনার পছন্দের পণ্য এক জায়গায়</p>
+  </header>
+
+  <div class="container">
+
+    <div class="title">
+      <h2>আমাদের পণ্য</h2>
+      <p>পছন্দের পণ্য খুঁজে অর্ডার করুন</p>
+    </div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="search"
+        placeholder="পণ্যের নাম লিখে খুঁজুন..."
+        oninput="searchProducts()"
+      >
+    </div>
+
+    <div class="categories" id="categoryButtons">
+      <button class="active" onclick="setCategory('all', this)">সব পণ্য</button>
+      <button onclick="setCategory('fashion', this)">ফ্যাশন</button>
+      <button onclick="setCategory('electronics', this)">ইলেকট্রনিক্স</button>
+      <button onclick="setCategory('home', this)">ঘর ও গৃহস্থালি</button>
+      <button onclick="setCategory('beauty', this)">বিউটি</button>
+    </div>
+
+    <div class="result-bar">
+      <span id="resultCount">পণ্য: 0</span>
+      <span>Fashion — স্টাইলিশ ও আকর্ষণীয় ফ্যাশন পণ্য যা আপনার মনের মত পণ্য হবে ❤️‍🩹💯 </span>
+    </div>
+
+    <div class="products" id="products"></div>
+
+    <div id="empty">
+      কোনো পণ্য পাওয়া যায়নি।
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+
+    <a href="index.html" class="back-home">🏠 হোম পেজে ফিরে যান</a>
+  </div>
+
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      query,
+      where,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-XFqL06ilW-_Q_N2uGyc00zK9ixsaL5c",
+      authDomain: "shopping-smart-darshana.firebaseapp.com",
+      projectId: "shopping-smart-darshana",
+      storageBucket: "shopping-smart-darshana.firebasestorage.app",
+      messagingSenderId: "143389365727",
+      appId: "1:143389365727:web:0f79849851fc3641b2206a",
+      measurementId: "G-WBBHYLHNBY"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+
+    window.firebaseReview = {
+      db,
+      collection,
+      addDoc,
+      query,
+      where,
+      getDocs,
+      serverTimestamp
+    };
+  </script>
+
+  <script>
+    /*
+    =========================================================
+    নতুন পণ্য যোগ করার একমাত্র জায়গা: নিচের PRODUCTS তালিকা।
+
+    এখানে ১০,০০০-এর বেশি পণ্যও যোগ করা যাবে।
+    প্রতিটি নতুন পণ্যের জন্য শুধু একটি নতুন {...} যোগ করুন।
+    JavaScript-এর অন্য কোনো অংশ পরিবর্তন করবেন না।
+
+    গুরুত্বপূর্ণ:
+    ১০,০০০+ পণ্য হলে একসাথে সবগুলো স্ক্রিনে দেখানো হবে না।
+    প্রতি পেজে ২৪টি করে দেখাবে এবং পরের/আগের বাটন থাকবে।
+    এতে বড় পণ্য তালিকাও ব্যবহার করা সহজ থাকবে।
+
+    category অবশ্যই:
+    fashion / electronics / home / beauty
+
+    image:
+    ছবি না থাকলে image: "" রেখে emoji ব্যবহার করতে পারেন।
+    =========================================================
+    */
+
+    const PRODUCTS = [
+  {
+    name: "পাকিস্তানি থ্রি পিস",
+    id: "threepiece1",
+    category: "fashion",
+    price: 1500,
+    image: "threepiece1.png",
+    emoji: "👗",
+    description: "👗 পাকিস্তানি থ্রি পিস | কাপড়: লন/কটন | কাজ: সুন্দর এমব্রয়ডারি | সেটে আছে: লং কামিজ, প্যান্ট ও ওড়না | সাইজ: M, L, XL | স্টাইলিশ ও আকর্ষণীয় ডিজাইন।"
+  },
+
+  {
+    name: "স্টাইলিশ টি-শার্ট",
+    id: "tshirt1",
+    category: "fashion",
+    price: 450,
+    image: "tshirt.png",
+    emoji: "👕",
+    description: "আরামদায়ক ও ট্রেন্ডি টি-শার্ট।"
+  }
+];const DELIVERY_CHARGE = 120;
+    const WHATSAPP_NUMBER = "8801981000610";
+    const PRODUCTS_PER_PAGE = 24;
+
+    let selectedCategory = "all";
+    let currentPage = 1;
+
+    function formatPrice(number) {
+      return Number(number).toLocaleString("bn-BD");
+    }
+
+    function createProductCard(product) {
+      const card = document.createElement("div");
+      card.className = "product";
+
+      let visual = "";
+
+      if (product.image) {
+        visual = `
+          <img
+            src="${escapeHtml(product.image)}"
+            alt="${escapeHtml(product.name)}"
+            class="product-image"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <div class="emoji-image" style="display:none;">
+            ${product.emoji || "🛍️"}
+          </div>
+        `;
+      } else {
+        visual = `
+          <div class="emoji-image">
+            ${product.emoji || "🛍️"}
+          </div>
+        `;
+      }
+
+      card.innerHTML = `
+        ${visual}
+
+        <h3>${escapeHtml(product.name)}</h3>
+
+        <p>${escapeHtml(product.description || "")}</p>
+
+        <div class="price">
+          ৳ ${formatPrice(product.price)}
+        </div>
+
+        <button class="order-btn" type="button">
+          🛒 অর্ডার করুন
+        </button>
+
+        <button class="review-btn" type="button">
+          ⭐ রিভিউ দিন ও দেখুন
+        </button>
+      `;
+
+      card.querySelector(".order-btn").addEventListener("click", function() {
+        order(product);
+      });
+
+      card.querySelector(".review-btn").addEventListener("click", function() {
+        openReviewModal(product);
+      });
+
+      return card;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getFilteredProducts() {
+  const search = document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const productId = new URLSearchParams(window.location.search)
+    .get("product");
+
+  return PRODUCTS.filter(function(product) {
+    const productMatch =
+      !productId || product.id === productId;
+
+    const categoryMatch =
+      selectedCategory === "all" ||
+      product.category === selectedCategory;
+
+    const text =
+      (product.name + " " + (product.description || ""))
+      .toLowerCase();
+
+    const searchMatch =
+      !search || text.includes(search);
+
+    return productMatch && categoryMatch && searchMatch;
+  });
+}
+
+    function renderProducts() {
+      const list = getFilteredProducts();
+      const container = document.getElementById("products");
+      const empty = document.getElementById("empty");
+      const pagination = document.getElementById("pagination");
+
+      container.innerHTML = "";
+      pagination.innerHTML = "";
+
+      document.getElementById("resultCount").textContent =
+        "পণ্য: " + formatPrice(list.length);
+
+      if (list.length === 0) {
+        empty.style.display = "block";
+        return;
+      }
+
+      empty.style.display = "none";
+
+      const totalPages =
+        Math.ceil(list.length / PRODUCTS_PER_PAGE);
+
+      if (currentPage > totalPages) {
+        currentPage = totalPages;
+      }
+
+      const start =
+        (currentPage - 1) * PRODUCTS_PER_PAGE;
+
+      const pageProducts =
+        list.slice(start, start + PRODUCTS_PER_PAGE);
+
+      pageProducts.forEach(function(product) {
+        container.appendChild(createProductCard(product));
+      });
+
+      renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+      const pagination =
+        document.getElementById("pagination");
+
+      if (totalPages <= 1) return;
+
+      const previous = document.createElement("button");
+      previous.className = "page-btn";
+      previous.textContent = "‹ আগের";
+      previous.disabled = currentPage === 1;
+      previous.onclick = function() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProducts();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+      pagination.appendChild(previous);
+
+      const info = document.createElement("span");
+      info.className = "page-info";
+      info.textContent =
+        currentPage + " / " + totalPages;
+      pagination.appendChild(info);
+
+      const next = document.createElement("button");
+      next.className = "page-btn";
+      next.textContent = "পরের ›";
+      next.disabled = currentPage === totalPages;
+      next.onclick = function() {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderProducts();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+      pagination.appendChild(next);
+    }
+
+    function setCategory(category, button) {
+      selectedCategory = category;
+      currentPage = 1;
+
+      document
+        .querySelectorAll("#categoryButtons button")
+        .forEach(function(btn) {
+          btn.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      renderProducts();
+    }
+
+    function searchProducts() {
+      currentPage = 1;
+      renderProducts();
+    }
+
+    function order(product) {
+  const productPrice = Number(product.price);
+
+  if (!product.name || !productPrice || productPrice <= 0) {
+    alert("পণ্যের তথ্য সঠিক নয়।");
+    return;
+  }
+
+  const oldModal = document.getElementById("orderModal");
+  if (oldModal) oldModal.remove();
+
+  const imageUrl = product.image
+    ? new URL(product.image, window.location.href).href
+    : "";
+
+  const modal = document.createElement("div");
+  modal.id = "orderModal";
+
+  modal.innerHTML = `
+    <div style="
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      z-index:9999;
+      overflow:auto;
+      padding:20px;
+    ">
+      <div style="
+        max-width:500px;
+        margin:20px auto;
+        background:white;
+        border-radius:18px;
+        padding:20px;
+      ">
+
+        <button id="closeOrder" style="
+          float:right;
+          border:none;
+          background:#eee;
+          width:38px;
+          height:38px;
+          border-radius:50%;
+          font-size:24px;
+        ">×</button>
+
+        <h2 style="
+          color:#087f3f;
+          text-align:center;
+        ">🛒 পণ্য অর্ডার ফর্ম</h2>
+
+        ${
+          imageUrl
+            ? `<img src="${escapeHtml(imageUrl)}"
+                style="
+                  width:100%;
+                  max-height:280px;
+                  object-fit:contain;
+                  border-radius:14px;
+                  background:#f7f7f7;
+                  margin:10px 0;
+                "
+                alt="${escapeHtml(product.name)}">`
+            : ""
+        }
+
+        <h2 style="
+          color:#087f3f;
+          text-align:center;
+        ">${escapeHtml(product.name)}</h2>
+
+        <p style="text-align:center;color:#555;">
+          ${escapeHtml(product.description || "")}
+        </p>
+
+        <div style="
+          text-align:center;
+          font-size:24px;
+          font-weight:bold;
+          color:#e65100;
+          margin:15px;
+        ">
+          ৳ ${formatPrice(productPrice)}
+        </div>
+
+        <input id="orderName"
+          placeholder="আপনার নাম লিখুন"
+          style="width:100%;padding:14px;margin:6px 0;
+          border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+        <input id="orderPhone"
+          type="tel"
+          placeholder="আপনার মোবাইল নম্বর লিখুন"
+          style="width:100%;padding:14px;margin:6px 0;
+          border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+        <input id="orderQuantity"
+          type="number"
+          min="1"
+          placeholder="পণ্য সংখ্যা কয়টি লিখুন"
+          style="width:100%;padding:14px;margin:6px 0;
+          border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+        <input id="orderDistrict"
+  placeholder="জেলা লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+<input id="orderThana"
+  placeholder="থানা/উপজেলা লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+<input id="orderUnion"
+  placeholder="স্থান/ইউনিয়ন লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+<input id="orderVillage"
+  placeholder="গ্রাম লিখুন"
+  style="width:100%;padding:14px;margin:6px 0;
+  border:1px solid #ccc;border-radius:10px;font-size:16px;">
+
+        <button id="confirmOrder" style="
+          width:100%;
+          border:none;
+          background:#087f3f;
+          color:white;
+          padding:15px;
+          border-radius:12px;
+          font-size:18px;
+          font-weight:bold;
+          margin-top:10px;
+        ">
+          📲 অর্ডার নিশ্চিত করুন
+        </button>
+
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById("closeOrder").onclick = function() {
+    modal.remove();
+  };
+
+  document.getElementById("confirmOrder").onclick = function() {
+    const customerName =
+      document.getElementById("orderName").value.trim();
+
+    const phone =
+      document.getElementById("orderPhone").value.trim();
+
+    const quantity =
+      Number(document.getElementById("orderQuantity").value);
+
+    const district =
+  document.getElementById("orderDistrict").value.trim();
+
+const thana =
+  document.getElementById("orderThana").value.trim();
+
+const union =
+  document.getElementById("orderUnion").value.trim();
+
+const village =
+  document.getElementById("orderVillage").value.trim();
+
+const address =
+  "জেলা: " + district +
+  ", থানা/উপজেলা: " + thana +
+  ", স্থান/ইউনিয়ন: " + union +
+  ", গ্রাম: " + village;
+    if (!customerName || !phone || !district || !thana || !union || !village) {
+  alert("নাম, মোবাইল নম্বর, জেলা, থানা/উপজেলা, স্থান/ইউনিয়ন ও গ্রাম পূরণ করুন");
+  return;
+}
+
+    if (!Number.isInteger(quantity) || quantity <= 0) {
+      alert("সঠিক পরিমাণ লিখুন।");
+      return;
+    }
+
+    const productTotal = productPrice * quantity;
+    const total = productTotal + DELIVERY_CHARGE;
+
+    const message =
+      "শপিং স্মার্ট দর্শনা\n" +
+      "━━━━━━━━━━━━━━━━\n" +
+      "নতুন অর্ডার\n\n" +
+      "পণ্যের নাম: " + product.name + "\n" +
+      "একক মূল্য: ৳" + productPrice + "\n" +
+      "পরিমাণ: " + quantity + "\n" +
+      "পণ্যের মোট মূল্য: ৳" + productTotal + "\n" +
+      "ডেলিভারি চার্জ: ৳" + DELIVERY_CHARGE + "\n" +
+      "━━━━━━━━━━━━━━━━\n" +
+      "সর্বমোট: ৳" + total + "\n\n" +
+      "কাস্টমারের নাম: " + customerName + "\n" +
+      "মোবাইল নম্বর: " + phone + "\n" +
+      "জেলা: " + district + "\n" +
+"থানা/উপজেলা: " + thana + "\n" +
+"স্থান/ইউনিয়ন: " + union + "\n" +
+"গ্রাম: " + village + "\n\n" +
+      "প্রোডাক্টের ছবি: " + imageUrl + "\n\n" +
+"সবুজ Send (➤) বাটনে চাপ দিয়ে মেসেজটা পাঠিয়ে দিন। ❤️";
+
+    const whatsappURL =
+      "https://wa.me/" +
+      WHATSAPP_NUMBER +
+      "?text=" +
+      encodeURIComponent(message);
+
+    window.open(whatsappURL, "_blank");
+  };
+}
+
+
+    function reviewDateText(value) {
+      try {
+        const date = value && typeof value.toDate === "function"
+          ? value.toDate()
+          : new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "";
+        return date.toLocaleDateString("bn-BD", {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function starText(rating) {
+      const n = Math.max(1, Math.min(5, Number(rating) || 0));
+      return "★".repeat(n) + "☆".repeat(5 - n);
+    }
+
+    function openReviewModal(product) {
+      const old = document.getElementById("reviewModal");
+      if (old) old.remove();
+
+      const modal = document.createElement("div");
+      modal.id = "reviewModal";
+      modal.className = "review-modal";
+
+      modal.innerHTML = `
+        <div class="review-box" role="dialog" aria-modal="true" aria-label="পণ্য রিভিউ">
+          <div class="review-head">
+            <h2>⭐ ${escapeHtml(product.name)}</h2>
+            <button class="review-close" type="button" aria-label="বন্ধ করুন">×</button>
+          </div>
+
+          <div class="review-summary" id="reviewSummary">
+            <div class="review-stars">☆☆☆☆☆</div>
+            <div>রিভিউ লোড হচ্ছে...</div>
+          </div>
+
+          <form class="review-form" id="reviewForm">
+            <label for="reviewName">আপনার নাম</label>
+            <input id="reviewName" maxlength="60" required placeholder="নাম লিখুন">
+
+            <label>আপনার রেটিং</label>
+            <div class="star-picker" aria-label="তারকা রেটিং">
+              <input type="radio" id="star5" name="rating" value="5">
+              <label for="star5" title="৫ স্টার">★</label>
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4" title="৪ স্টার">★</label>
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3" title="৩ স্টার">★</label>
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2" title="২ স্টার">★</label>
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1" title="১ স্টার">★</label>
+            </div>
+
+            <label for="reviewText">আপনার রিভিউ</label>
+            <textarea id="reviewText" maxlength="1000" required placeholder="পণ্যটি কেমন লেগেছে লিখুন..."></textarea>
+
+            <div id="reviewMessage"></div>
+
+            <button class="review-submit" id="reviewSubmit" type="submit">
+              📤 রিভিউ পাঠান
+            </button>
+          </form>
+
+          <div class="review-list">
+            <h3 style="color:#087f3f;margin:0 0 8px;">কাস্টমারদের রিভিউ</h3>
+            <div id="reviewList" class="review-loading">রিভিউ লোড হচ্ছে...</div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      const close = () => modal.remove();
+      modal.querySelector(".review-close").addEventListener("click", close);
+      modal.addEventListener("click", function(e) {
+        if (e.target === modal) close();
+      });
+
+      loadReviews(product, modal);
+
+      modal.querySelector("#reviewForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const name = modal.querySelector("#reviewName").value.trim();
+        const review = modal.querySelector("#reviewText").value.trim();
+        const ratingInput = modal.querySelector('input[name="rating"]:checked');
+        const rating = ratingInput ? Number(ratingInput.value) : 0;
+        const submit = modal.querySelector("#reviewSubmit");
+        const message = modal.querySelector("#reviewMessage");
+
+        message.innerHTML = "";
+
+        if (!name) {
+          message.innerHTML = '<div class="review-error">আপনার নাম লিখুন।</div>';
+          return;
+        }
+
+        if (!rating || rating < 1 || rating > 5) {
+          message.innerHTML = '<div class="review-error">১ থেকে ৫ স্টারের একটি রেটিং দিন।</div>';
+          return;
+        }
+
+        if (!review) {
+          message.innerHTML = '<div class="review-error">আপনার রিভিউ লিখুন।</div>';
+          return;
+        }
+
+        if (name.length > 60 || review.length > 1000) {
+          message.innerHTML = '<div class="review-error">রিভিউ বা নাম অনেক বড় হয়ে গেছে।</div>';
+          return;
+        }
+
+        submit.disabled = true;
+        submit.textContent = "⏳ রিভিউ পাঠানো হচ্ছে...";
+
+        try {
+          await window.firebaseReview.addDoc(
+            window.firebaseReview.collection(window.firebaseReview.db, "reviews"),
+            {
+              productId: String(product.id),
+              productName: String(product.name),
+              name: name,
+              rating: rating,
+              review: review,
+              createdAt: window.firebaseReview.serverTimestamp()
+            }
+          );
+
+          message.innerHTML = '<div style="background:#eef9f1;color:#087f3f;border-radius:10px;padding:10px;margin:10px 0;">✅ আপনার রিভিউ সফলভাবে পাঠানো হয়েছে। ধন্যবাদ! ❤️</div>';
+
+          modal.querySelector("#reviewName").value = "";
+          modal.querySelector("#reviewText").value = "";
+          modal.querySelectorAll('input[name="rating"]').forEach(function(input) {
+            input.checked = false;
+          });
+
+          await loadReviews(product, modal);
+        } catch (error) {
+          console.error("Review save error:", error);
+          message.innerHTML = `
+            <div class="review-error">
+              ❌ রিভিউ পাঠানো যায়নি। Firebase-এর Firestore Security Rules ঠিক করা আছে কি না দেখুন।
+            </div>
+          `;
+        } finally {
+          submit.disabled = false;
+          submit.textContent = "📤 রিভিউ পাঠান";
+        }
+      });
+    }
+
+    async function loadReviews(product, modal) {
+      const listBox = modal.querySelector("#reviewList");
+      const summary = modal.querySelector("#reviewSummary");
+
+      listBox.className = "review-loading";
+      listBox.textContent = "রিভিউ লোড হচ্ছে...";
+
+      try {
+        // শুধু productId দিয়ে রিভিউ আনা হচ্ছে।
+        // createdAt দিয়ে Firestore orderBy না করায় আলাদা composite index লাগবে না।
+        const q = window.firebaseReview.query(
+          window.firebaseReview.collection(window.firebaseReview.db, "reviews"),
+          window.firebaseReview.where("productId", "==", String(product.id))
+        );
+
+        const snapshot = await window.firebaseReview.getDocs(q);
+        const reviews = [];
+
+        snapshot.forEach(function(doc) {
+          reviews.push(doc.data());
+        });
+
+        // নতুন রিভিউ আগে দেখাবে; Firestore index ছাড়াই JavaScript-এ sort করা হচ্ছে।
+        reviews.sort(function(a, b) {
+          const ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+          const tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+          return tb - ta;
+        });
+
+        if (reviews.length === 0) {
+          summary.innerHTML = `
+            <div class="review-stars">☆☆☆☆☆</div>
+            <div>এখনও কোনো রিভিউ নেই। প্রথম রিভিউটি আপনিই দিন।</div>
+          `;
+          listBox.className = "review-empty";
+          listBox.textContent = "এখনও কোনো কাস্টমার রিভিউ দেননি।";
+          return;
+        }
+
+        const total = reviews.reduce(function(sum, item) {
+          return sum + Number(item.rating || 0);
+        }, 0);
+
+        const average = total / reviews.length;
+
+        summary.innerHTML = `
+          <div class="review-stars">${starText(Math.round(average))}</div>
+          <div><strong>${average.toFixed(1)}</strong> / 5 — মোট ${formatPrice(reviews.length)}টি রিভিউ</div>
+        `;
+
+        listBox.className = "";
+
+        reviews.forEach(function(item) {
+          const div = document.createElement("div");
+          div.className = "review-item";
+
+          const top = document.createElement("div");
+          top.className = "review-item-top";
+
+          const name = document.createElement("div");
+          name.className = "review-name";
+          name.textContent = item.name || "কাস্টমার";
+
+          const date = document.createElement("div");
+          date.className = "review-date";
+          date.textContent = reviewDateText(item.createdAt) || "তারিখ অপেক্ষমাণ";
+
+          const stars = document.createElement("div");
+          stars.className = "review-stars";
+          stars.style.fontSize = "20px";
+          stars.textContent = starText(item.rating);
+
+          const body = document.createElement("div");
+          body.className = "review-text";
+          body.textContent = item.review || "";
+
+          top.appendChild(name);
+          top.appendChild(date);
+          div.appendChild(top);
+          div.appendChild(stars);
+          div.appendChild(body);
+          listBox.appendChild(div);
+        });
+      } catch (error) {
+        console.error("Review load error:", error);
+        listBox.className = "review-error";
+        listBox.textContent =
+          "রিভিউ লোড করা যাচ্ছে না। Firebase-এর Firestore সংযোগ ঠিক করা আছে কি না দেখুন।";
+        summary.innerHTML = `
+          <div class="review-stars">☆☆☆☆☆</div>
+          <div>রিভিউ তথ্য পাওয়া যাচ্ছে না।</div>
+        `;
+      }
+    }
+
+    function loadCategoryFromURL() {
+      const params =
+        new URLSearchParams(window.location.search);
+
+      const category = params.get("category");
+
+      if (
+        ["fashion", "electronics", "home", "beauty"]
+        .includes(category)
+      ) {
+        selectedCategory = category;
+
+        document
+          .querySelectorAll("#categoryButtons button")
+          .forEach(function(btn) {
+            btn.classList.remove("active");
+          });
+
+        const buttons =
+          document.querySelectorAll("#categoryButtons button");
+
+        const index = {
+          fashion: 1,
+          electronics: 2,
+          home: 3,
+          beauty: 4
+        }[category];
+
+        if (buttons[index]) {
+          buttons[index].classList.add("active");
+        }
+      }
+
+      renderProducts();
+    }
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadCategoryFromURL
+    );
+  </script>
+
+</body>
+</html>
