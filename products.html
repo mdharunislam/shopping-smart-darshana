@@ -605,11 +605,11 @@
         </div>
 <div style="
   margin: 10px 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  color: ${Number(product.stock) > 0 ? '#087f3f' : '#d60000'};
+  color: ${Number(product.stock ?? 0) > 0 ? '#087f3f' : '#d60000'};
 ">
-  ${Number(product.stock) > 0
+  ${Number(product.stock ?? 0) > 0
     ? '✅ স্টক আছে — ' + formatPrice(product.stock) + ' টি'
     : '❌ স্টক শেষ'}
 </div>
